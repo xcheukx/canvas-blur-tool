@@ -1,0 +1,220 @@
+﻿<html>
+<body>
+	<style>canvas{cursor:pointer;}</style>
+	<!-- <canvas id="canvas"></canvas>
+	<canvas id="tempCanvas" style="display:none;"></canvas> -->
+	<img id="one" src="./20171017103929.jpg" style="display:none;" />
+	<img id="pic" src="./11.png" style="width:300px;" />
+	<a href="javascript:void(0);" class="submit">[ 生成图片 ]</a>
+	<a href="javascript:void(0);" class="clear">[ 清除画板 ]</a>
+	<!-- <a href="javascript:void(0);" class="reset">[ 重置 ]</a> -->
+	笔刷尺寸：
+	<a href="javascript:void(0);" class="setBrushUp">[ + ]</a>
+	<a href="javascript:void(0);" class="setBrushDown">[ - ]</a>
+	<span class="brushSize"></span>
+	<script src="https://cdn.bootcss.com/jquery/1.8.1/jquery.min.js"></script>
+	<script src="cBlurTool.js"></script>
+	<script>
+	var blurtool = new BlurTool({
+		target:'pic',
+		brushSize:20
+	});
+	$('a.submit').click(function(){
+		var img = blurtool.save();
+		blurtool.clear();
+		// console.log(img);
+		if($('.output_img').size()>0){
+			$('.output_img').attr('src',img);
+			return;
+		}
+		$('body').append("<img class='output_img' src="+img+" />");
+	})
+	$('a.clear').click(function(){
+		blurtool.clear();
+	})
+	// $('a.reset').click(function(){
+	// 	blurtool.reset();
+	// })
+	$('a.setBrushUp').click(function(){
+		var size = blurtool.setBrush(5);
+		$('.brushSize').text(size);
+	})
+	$('a.setBrushDown').click(function(){
+		var size = blurtool.setBrush(-5);
+		$('.brushSize').text(size);
+	})
+	// blurtool.save();
+
+	// bluringBrush(document.getElementById('one'),500,300,15);
+
+	// function bluringBrush(target,width,height,brushSize){
+	// 	var _img1 = target; //源图片
+	// 	// _img1.crossOrigin="anonymous";
+	// 	var tempCanvas = document.getElementById("tempCanvas"); //用于处理图片做成模糊笔刷
+	// 	var tempCtx = tempCanvas.getContext("2d"); 
+	// 	var canvas_ = document.getElementById("canvas"); //画板
+	// 	var context = canvas_.getContext("2d");
+
+		
+	// 	tempCanvas.setAttribute("width",width);
+	// 	tempCanvas.setAttribute("height",height);
+	// 	canvas_.setAttribute("width",width); //尺寸设置
+	// 	canvas_.setAttribute("height",height); //尺寸设置
+
+
+	// 	_img1.onload = function() {
+	// 		// tempCtx.drawImage(_img1, 0, 0, screen.width, screen.height);//将img画入模糊画板中
+	// 		context.drawImage(_img1, 0, 0, width, height);//将img画入画板中
+					                                                            
+	//         var data = context.getImageData(0, 0, width, height);
+	//         var emptyData = tempCtx.createImageData(width, height);
+	//         emptyData = gaussBlur(data);
+	//         tempCtx.putImageData(emptyData, 0, 0);
+
+	// 		var tmpImg = new Image();  
+	// 		console.log(tmpImg == Image);
+	// 	    tmpImg.src = tempCanvas.toDataURL("image/png");
+
+	// 	    //确保模糊画板生成的img有被读取
+	// 		tmpImg.onload = function() {
+	// 			// context.strokeStyle = "red";
+	// 			context.lineWidth = brushSize;
+	// 			context.lineCap = "round";
+	// 			context.strokeStyle = context.createPattern(tmpImg , 'repeat');			
+					
+	// 			var array_paint = [];
+	// 			var current_y = 0;
+	// 			var current_x = 0;
+	// 			//判断鼠标是否按下
+	// 			var m_down = false;
+
+
+	// 			function paint()
+	// 			{
+	// 				context.beginPath();
+	// 				context.moveTo(array_paint[0][0],array_paint[0][1]);
+	// 				if(array_paint.length == 1){
+	// 					context.lineTo(array_paint[0][0] +1,array_paint[0][1] +1);
+	// 				}
+	// 				else
+	// 				{
+	// 					var i =1; 
+	// 					for(i in array_paint) {
+	// 						context.lineTo(array_paint[i][0],array_paint[i][1]);
+	// 						context.moveTo(array_paint[i][0],array_paint[i][1]);
+	// 					}
+
+	// 				}
+	// 				context.closePath();
+	// 				context.stroke();
+	// 			}
+
+
+	// 			//按下鼠标
+	// 			canvas_.onmousedown = function(event) {
+	// 				m_down = true;
+	// 				current_x = event.offsetX;
+	// 				current_y = event.offsetY;
+	// 				array_paint.push([current_x,current_y]);
+	// 				paint();
+	// 			}
+
+	// 			//鼠标松开,清空数据
+	// 			canvas_.onmouseup = function(event) {
+	// 				m_down = false;
+	// 				array_paint = [];
+	// 			}
+
+	// 			//鼠标按下后拖动
+	// 			canvas_.onmousemove = function(event) {
+	// 				if(m_down) {
+	// 					current_x = event.offsetX;
+	// 					current_y = event.offsetY;
+	// 					array_paint.push([current_x,current_y]);
+	// 					paint();
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+		
+	// 	//高斯模糊滤镜
+	// 	function gaussBlur(imgData) {
+	// 	    var pixes = imgData.data;
+	// 	    var width = imgData.width;
+	// 	    var height = imgData.height;
+	// 	    var gaussMatrix = [],
+	// 	        gaussSum = 0,
+	// 	        x, y,
+	// 	        r, g, b, a,
+	// 	        i, j, k, len;
+
+	// 	    var radius = 100; //radius:模糊取值半径
+	// 	    var sigma = 15;  //sigma:方差取值
+
+	// 	    a = 1 / (Math.sqrt(2 * Math.PI) * sigma);
+	// 	    b = -1 / (2 * sigma * sigma);
+	// 	    //生成高斯矩阵
+	// 	    for (i = 0, x = -radius; x <= radius; x++, i++){
+	// 	        g = a * Math.exp(b * x * x);
+	// 	        gaussMatrix[i] = g;
+	// 	        gaussSum += g;
+
+	// 	    }
+	// 	    //归一化, 保证高斯矩阵的值在[0,1]之间
+	// 	    for (i = 0, len = gaussMatrix.length; i < len; i++) {
+	// 	        gaussMatrix[i] /= gaussSum;
+	// 	    }
+	// 	    //x 方向一维高斯运算
+	// 	    for (y = 0; y < height; y++) {
+	// 	        for (x = 0; x < width; x++) {
+	// 	            r = g = b = a = 0;
+	// 	            gaussSum = 0;
+	// 	            for(j = -radius; j <= radius; j++){
+	// 	                k = x + j;
+	// 	                if(k >= 0 && k < width){//确保 k 没超出 x 的范围
+	// 	                    //r,g,b,a 四个一组
+	// 	                    i = (y * width + k) * 4;
+	// 	                    r += pixes[i] * gaussMatrix[j + radius];
+	// 	                    g += pixes[i + 1] * gaussMatrix[j + radius];
+	// 	                    b += pixes[i + 2] * gaussMatrix[j + radius];
+	// 	                    // a += pixes[i + 3] * gaussMatrix[j];
+	// 	                    gaussSum += gaussMatrix[j + radius];
+	// 	                }
+	// 	            }
+	// 	            i = (y * width + x) * 4;
+	// 	            // 除以 gaussSum 是为了消除处于边缘的像素, 高斯运算不足的问题
+	// 	            // console.log(gaussSum)
+	// 	            pixes[i] = r / gaussSum;
+	// 	            pixes[i + 1] = g / gaussSum;
+	// 	            pixes[i + 2] = b / gaussSum;
+	// 	            // pixes[i + 3] = a ;
+	// 	        }
+	// 	    }
+	// 	    //y 方向一维高斯运算
+	// 	    for (x = 0; x < width; x++) {
+	// 	        for (y = 0; y < height; y++) {
+	// 	            r = g = b = a = 0;
+	// 	            gaussSum = 0;
+	// 	            for(j = -radius; j <= radius; j++){
+	// 	                k = y + j;
+	// 	                if(k >= 0 && k < height){//确保 k 没超出 y 的范围
+	// 	                    i = (k * width + x) * 4;
+	// 	                    r += pixes[i] * gaussMatrix[j + radius];
+	// 	                    g += pixes[i + 1] * gaussMatrix[j + radius];
+	// 	                    b += pixes[i + 2] * gaussMatrix[j + radius];
+	// 	                    // a += pixes[i + 3] * gaussMatrix[j];
+	// 	                    gaussSum += gaussMatrix[j + radius];
+	// 	                }
+	// 	            }
+	// 	            i = (y * width + x) * 4;
+	// 	            pixes[i] = r / gaussSum;
+	// 	            pixes[i + 1] = g / gaussSum;
+	// 	            pixes[i + 2] = b / gaussSum;
+	// 	        }
+	// 	    }
+	// 	    return imgData;
+	// 	}
+	// }
+	</script>
+</body>
+</html>
