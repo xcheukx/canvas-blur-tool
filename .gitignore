@@ -1,3 +1,5 @@
 Thumbs.db
 node_modules/
+src/jquery.blurtool.js
+demo/blurCanvas.html
 npm-debug.log
