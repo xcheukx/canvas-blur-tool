@@ -2,7 +2,7 @@
 * @Author: xcheukx
 * @Date:   2017-12-05 15:46:36
 * @Last Modified by:   xcheukx
-* @Last Modified time: 2017-12-11 09:58:53
+* @Last Modified time: 2017-12-11 14:13:46
 */
 class BlurTool {
     constructor (opts) {
@@ -149,6 +149,17 @@ class BlurTool {
 
         this._canvasCtx.drawImage(this._target, 0, 0, this._width, this._height);//将图片转入画板中
         
+    }
+    setBrush(size){
+        if(!this._canvasCtx){
+            throw new Error('could not find the canvas!');
+        }
+        if(typeof obj !== 'number' || isNaN(obj)){
+            throw new Error('brush size must be number!');
+        }
+        const context = this._canvasCtx;
+        context.lineWidth = context.lineWidth + size;
+        return context.lineWidth;
     }
     gaussBlur(imgData){
         const pixes = imgData.data;
