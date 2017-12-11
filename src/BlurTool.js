@@ -1,8 +1,8 @@
 ﻿/*
 * @Author: xcheukx
 * @Date:   2017-12-05 15:46:36
-* @Last Modified by:   卓圳宝
-* @Last Modified time: 2017-12-11 09:41:01
+* @Last Modified by:   xcheukx
+* @Last Modified time: 2017-12-11 09:58:53
 */
 class BlurTool {
     constructor (opts) {
@@ -88,14 +88,14 @@ class BlurTool {
         context.beginPath();
         context.moveTo(array_paint[0][0],array_paint[0][1]);
         if(array_paint.length == 1){
-            context.lineTo(array_paint[0][0] +1,array_paint[0][1] +1);
+            context.lineTo(array_paint[0][0] + 1, array_paint[0][1] + 1);
         }
         else
         {
-            let i =1; 
+            let i = 1; 
             for(i in array_paint) {
-                context.lineTo(array_paint[i][0],array_paint[i][1]);
-                context.moveTo(array_paint[i][0],array_paint[i][1]);
+                context.lineTo(array_paint[i][0], array_paint[i][1]);
+                context.moveTo(array_paint[i][0], array_paint[i][1]);
             }
 
         }
